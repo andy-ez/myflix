@@ -16,3 +16,8 @@
 # Video.create(title: 'Season 7', description: 'Lorem ipsum', category: Category.all.sample, small_cover_url: "/tmp/#{['futurama', 'south_park', 'family_guy'].sample}.jpg", large_cover_url: "/tmp/monk_large.jpg")
 # Video.create(title: 'Narcos', description: 'Lorem ipsum', category: Category.all.sample, small_cover_url: "/tmp/#{['futurama', 'south_park', 'family_guy'].sample}.jpg", large_cover_url: "/tmp/monk_large.jpg")
 # Video.create(title: 'Nicholas Cage', description: 'Great Film!', category: Category.all.sample, small_cover_url: "/tmp/#{['futurama', 'south_park', 'family_guy'].sample}.jpg", large_cover_url: "/tmp/monk_large.jpg")
+
+kevin = User.create(full_name: "Kevin Tea", password: "password", email: "kevin@example.com")
+Review.create(video: Video.first, user: kevin, rating: 3, content: "Awesome video. Would highly recommmend")
+Review.create(video: Video.first, user: User.first, rating: 5, content: "Fantastic video. Would highly recommmend")
+Review.create(video: Video.second, user: kevin, rating: 5, content: "Awesome video. Would highly recommmend")
