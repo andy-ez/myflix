@@ -9,6 +9,8 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'pg'
+gem 'bootstrap_form'
+gem 'bcrypt'
 
 group :development do
   gem 'thin'
@@ -20,6 +22,8 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'rspec-rails', '2.99'
+  gem 'fabrication'
+  gem 'faker'
 end
 
 group :test do

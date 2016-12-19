@@ -1,0 +1,7 @@
+- @categories.each do |category|
+  %article.video_category
+    %header
+      %h3= link_to category.title, category_path(category)
+    .videos.row
+      = render category.recent_videos
+
