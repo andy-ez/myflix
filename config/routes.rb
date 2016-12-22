@@ -7,6 +7,9 @@ Myflix::Application.routes.draw do
   get '/logout', to: 'sessions#destroy'
   get '/home', to: 'categories#index'
   resources :users, except: [:new]
+  get 'my_queue', to: 'queue_items#index'
+  post 'update_queue', to: 'queue_items#update'
+  resources :queue_items, only: [:create, :destroy]
   resources :videos, only: [:show] do
     collection do
       get 'search', to: 'videos#search'

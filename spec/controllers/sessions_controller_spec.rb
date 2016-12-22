@@ -8,8 +8,9 @@ describe SessionsController do
       get :new
       expect(response).to render_template(:new)
     end
+
     it "redirects to the home page for authenticated users" do
-      session[:user_id] = alice.id
+      set_current_user(alice)
       get :new
       expect(response).to redirect_to home_path
     end
@@ -18,12 +19,15 @@ describe SessionsController do
   describe "POST create" do
     context "valid credentials" do
       before { post :create, email: alice.email, password: alice.password }
+      
       it "puts user id in the session hash" do
         expect(session[:user_id]).to eq(alice.id)
       end
+
       it "redirects to the home page" do
         expect(response).to redirect_to home_path
       end
+
       it "sets the notice" do
         expect(flash[:success]).not_to be_blank
       end
@@ -31,12 +35,15 @@ describe SessionsController do
 
     context "invalid credentials" do
       before { post :create, email: alice.email, password: alice.password + "abc" }
+      
       it "renders new template" do
         expect(response).to render_template(:new)
       end
+
       it "does not create user in session" do
         expect(session[:user_id]).to be_nil
       end
+      
       it "sets notice" do 
         expect(flash[:danger]).not_to be_blank
       end
@@ -45,7 +52,7 @@ describe SessionsController do
 
   describe "GET destroy" do
     before do
-      session[:user_id] = alice.id
+      set_current_user(alice)
       get :destroy
     end
     

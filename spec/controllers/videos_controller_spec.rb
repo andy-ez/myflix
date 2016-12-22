@@ -6,7 +6,7 @@ describe VideosController do
 
     context "authenticated user" do
       before do
-        session[:user_id] = Fabricate(:user).id
+        set_current_user
         get :show, id: new_vid.id
       end
 
@@ -21,27 +21,22 @@ describe VideosController do
       end
     end
 
-    context "unauthenticated user" do
-      it "should redirect to root" do
-        get :show, id: new_vid.id
-        expect(response).to redirect_to root_path
-      end
+    it_behaves_like "require sign in" do
+      let(:action) { get :show, id: new_vid.id }
     end
 
   end
 
   describe "GET search" do
+    before { 5.times { Fabricate(:video) } }
     it "should assign variable videos if user is authenticated" do
-      session[:user_id] = Fabricate(:user).id
-      5.times { Fabricate(:video) }
+      set_current_user
       get :search, title: Video.first.title
       expect(assigns(:videos)).to eq([Video.first])
     end
 
-    it "redirects to root if unathenticated" do 
-      5.times { Fabricate(:video) }
-      get :search, title: Video.first.title
-      expect(response).to redirect_to root_path
+    it_behaves_like "require sign in" do
+      let(:action) { get :search, title: Video.first.title }
     end
   end
 end
