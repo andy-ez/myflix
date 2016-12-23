@@ -1,0 +1,43 @@
+%section.user.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      %article
+        %header
+          %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest('#{@user.email}'.downcase)}?s=40")
+          %h2 #{@user.full_name}'s video collections (#{@user.queue_items.count})
+          - if current_user != @user
+            - if current_user.follows?(@user)
+              = link_to current_user.existing_relationship(@user), method: :delete do
+                %button.btn.btn-default Unfollow
+            - else
+              = link_to relationships_path(leader_id: @user.id), method: :post do
+                %button.btn.btn-default Follow
+        %table.table
+          %thead
+            %tr
+              %th(width="30%") Video Title
+              %th(width="15%") Genre
+          %tbody
+            - @user.queue_items.each do |queue_item|
+              %tr
+                %td
+                  = link_to queue_item.video_title, queue_item.video
+                %td
+                  = link_to queue_item.category.title, queue_item.category
+
+%section.user_reviews.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      %header
+        %h3 #{@user.full_name}'s Reviews (#{@user.reviews.count})
+      %ul
+        - @user.reviews.each do |review|
+          %article.review
+            %li.row
+              .col-sm-2
+                %p
+                  = link_to "\"#{review.video.title}\"", review.video
+                %col= display_rating(review)
+              .col-sm-8
+                %p
+                  = review.content

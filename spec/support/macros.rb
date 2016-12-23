@@ -9,3 +9,15 @@ end
 def clear_current_user
   session[:user_id] = nil
 end
+
+def sign_in(user=nil)
+  a_user = user || Fabricate(:user)
+  visit login_path
+  fill_in "Email Address", with: a_user.email
+  fill_in "Password", with: a_user.password
+  click_button "Sign In"
+end
+
+def click_video_on_home_page(video)
+  find("a[href='/videos/#{video.id}']").click
+end
