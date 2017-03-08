@@ -1,0 +1,10 @@
+!!! 5
+%html(lang="en-US")
+  %body
+    %p
+      Hi #{@invitation.recipient_name.split(" ")[0]},
+    %p
+      You have been invited to join MyFlix by #{@invitation.sender.full_name}
+    %p
+      = @invitation.message
+    %p= link_to "Accept This Invitation", register_with_token_url(@invitation.token)

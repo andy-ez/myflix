@@ -1,0 +1,4 @@
+- if obj.errors.full_messages.any?
+  %div.alert.alert-danger
+    - obj.errors.full_messages.each do |msg|
+      %p= msg

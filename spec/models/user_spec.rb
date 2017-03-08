@@ -25,6 +25,20 @@ describe User do
     end
   end
 
+  describe "#follow" do
+    let(:alice) { Fabricate(:user) }
+    let(:bob) { Fabricate(:user) }
+    it "follows another user" do
+      alice.follow(bob)
+      expect(alice.follows?(bob)).to be true
+    end
+
+    it "doesn't follow it self" do
+      alice.follow(alice)
+      expect(alice.follows?(alice)).to be false
+    end
+  end
+
   describe "#existing_relationship" do
     it "returns the existing relationship if one exists" do
       alice = Fabricate(:user)

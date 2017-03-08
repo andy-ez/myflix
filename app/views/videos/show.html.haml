@@ -15,7 +15,8 @@
 %section.reviews.container
   .row
     .col-sm-10.col-sm-offset-1
-      = form_for [@video, Review.new] do |f|
+      = form_for [ @video, @review ] do |f|
+        = render 'shared/errors', obj: @review
         %fieldset
           .form-group
             %label Rate this video
@@ -31,16 +32,17 @@
           = f.submit "Submit", class: "btn"
           = link_to "Cancel", @video
       %header
-        %h3 User Reviews (#{@reviews.count})
-      %ul
-        - @reviews.each do |review|
-          %article.review
-            %li.row
-              .col-sm-2
-                %span 
-                  = display_rating(review)
-                %p 
-                  by 
-                  = link_to review.user.full_name, review.user
-              .col-sm-8
-                %p= review.content
+        %h3 User Reviews (#{@reviews.size})
+      - if @reviews.any?
+        %ul
+          - @reviews.each do |review|
+            %article.review
+              %li.row
+                .col-sm-2
+                  %span 
+                    = display_rating(review)
+                  %p 
+                    by 
+                    = link_to review.user.full_name, review.user
+                .col-sm-8
+                  %p= review.content
