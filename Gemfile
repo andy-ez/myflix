@@ -12,6 +12,7 @@ gem 'pg'
 gem 'bootstrap_form'
 gem 'bcrypt'
 gem 'figaro'
+gem 'sidekiq'
 
 group :development do
   gem 'thin'
