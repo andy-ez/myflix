@@ -1,7 +1,7 @@
 Myflix::Application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  
+
   get 'ui(/:action)', controller: 'ui'
   root to: 'pages#front'
   get '/register', to: 'users#new'
@@ -22,6 +22,9 @@ Myflix::Application.routes.draw do
   resources :forgot_passwords, only: [:create]
   resources :password_resets, only: [:show, :create]
   resources :queue_items, only: [:create, :destroy]
+  namespace :admin do
+    resources :videos, only: [:new, :create]
+  end
   resources :videos, only: [:show] do
     collection do
       get 'search', to: 'videos#search'
