@@ -22,3 +22,5 @@ config/database.yml
 
 #vcr cassettes
 /spec/fixtures
+
+dump.rdb
