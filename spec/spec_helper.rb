@@ -98,5 +98,4 @@ RSpec.configure do |config|
   end
   config.infer_spec_type_from_file_location!
   config.before(:each) { ActionMailer::Base.deliveries.clear } 
-  config.treat_symbols_as_metadata_keys_with_true_values = true
 end

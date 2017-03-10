@@ -14,9 +14,9 @@ describe UsersController do
     context "valid personal info and declined card" do
       before do
         charge = double('charge')
-        charge.stub(:successful?) { false }
-        charge.stub(:error_message) { "Card declined" }
-        StripeWrapper::Charge.stub(:create) { charge }
+        allow(charge).to receive(:successful?).and_return(false)
+        allow(charge).to receive(:error_message).and_return("Card declined")
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
         post :create, user: Fabricate.attributes_for(:user)
       end
 
@@ -36,8 +36,8 @@ describe UsersController do
     context "with valid personal info" do
       before do
         charge = double('charge')
-        charge.stub(:successful?) { true }
-        StripeWrapper::Charge.stub(:create) { charge }
+        allow(charge).to receive(:successful?).and_return(true)
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
       end
       it "should create the user" do
         post :create, user: Fabricate.attributes_for(:user)
@@ -99,8 +99,8 @@ describe UsersController do
     context "email sending" do
       before do
         charge = double('charge')
-        charge.stub(:successful?) { true }
-        StripeWrapper::Charge.stub(:create) { charge }
+        allow(charge).to receive(:successful?).and_return(true)
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
       end
       after { ActionMailer::Base.deliveries.clear }
       it "sends the email to the correct recipient with valid inputs" do
