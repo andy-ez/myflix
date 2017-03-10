@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "User Invites a friend" do
-  scenario "User successfully invites a friend and the invitation is accepted" do
+  scenario "User successfully invites a friend and the invitation is accepted", { js: true, vcr: { record: :all } } do
     alice = Fabricate(:user)
     friend = Fabricate.attributes_for(:user)
     sign_in(alice)
@@ -27,12 +27,19 @@ feature "User Invites a friend" do
     current_email.click_link "Accept This Invitation"
     fill_in "Password", with: "password"
     fill_in "Full name", with: "John Doe"
+    within_frame(find('iframe')) do
+      fill_in name: 'cardnumber', with: 4242424242424242
+      fill_in name: 'exp-date', with: '11/20'
+      fill_in name: 'cvc', with: '123'
+      fill_in name: 'postal', with: '90210'
+    end
     click_button "Register"
   end
 
   def friend_signs_in
     fill_in "Email Address", with: "john@example.com"
     fill_in "Password", with: "password"
+    # save_and_open_page
     click_button "Sign In"
   end
 

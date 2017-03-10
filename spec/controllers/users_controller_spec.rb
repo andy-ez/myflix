@@ -10,7 +10,35 @@ describe UsersController do
   end
 
   describe "POST create" do
-    context "with valid inputs" do
+
+    context "valid personal info and declined card" do
+      before do
+        charge = double('charge')
+        charge.stub(:successful?) { false }
+        charge.stub(:error_message) { "Card declined" }
+        StripeWrapper::Charge.stub(:create) { charge }
+        post :create, user: Fabricate.attributes_for(:user)
+      end
+
+      it "does not create a new user record" do
+        expect(User.count).to eq(0)
+      end
+
+      it "renders the new template" do
+        expect(response).to render_template :new
+      end
+
+      it "sets the flash error message" do
+        expect(flash[:danger]).to eq("Card declined")
+      end
+    end
+
+    context "with valid personal info" do
+      before do
+        charge = double('charge')
+        charge.stub(:successful?) { true }
+        StripeWrapper::Charge.stub(:create) { charge }
+      end
       it "should create the user" do
         post :create, user: Fabricate.attributes_for(:user)
         expect(User.count).to eq(1)
@@ -46,8 +74,10 @@ describe UsersController do
       end
     end
 
-    context "with invalid inputs" do
-      before { post :create, user: {email: "testing@test.com"} }
+    context "with invalid personal info" do
+      before do
+        post :create, user: {email: "testing@test.com"}
+      end
 
       it "does not create a user" do
         expect(User.count).to eq(0)
@@ -60,9 +90,18 @@ describe UsersController do
       it "sets the @user variable" do
         expect(assigns(:user)).to be_instance_of(User)
       end
+
+      it "does not create a charge" do
+        expect(StripeWrapper::Charge).not_to receive(:create)
+      end
     end
 
     context "email sending" do
+      before do
+        charge = double('charge')
+        charge.stub(:successful?) { true }
+        StripeWrapper::Charge.stub(:create) { charge }
+      end
       after { ActionMailer::Base.deliveries.clear }
       it "sends the email to the correct recipient with valid inputs" do
         post :create, user: { email: "joe@example.com", password: "password", full_name: "Joe Example" }
