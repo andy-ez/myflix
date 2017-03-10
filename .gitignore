@@ -21,4 +21,4 @@ config/database.yml
 /config/application.yml
 
 #vcr cassettes
-spec/fixtures
+/spec/fixtures
