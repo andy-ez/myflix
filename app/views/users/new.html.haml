@@ -1,7 +1,11 @@
+%script(src="https://js.stripe.com/v3/")
+= javascript_include_tag "payment"
+= stylesheet_link_tag "stripe"
+%style
 %section.register.container
   .row
     .col-sm-10.col-sm-offset-1
-      = bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-6") do |f|
+      = bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-6", html: {id: 'payment-form'}) do |f|
         %header
           %h1 Register
           = f.alert_message "Please fix the errors below.", error_summary: false
@@ -10,6 +14,16 @@
           = f.password_field :password, label: "Password"
           = f.text_field :full_name
           = hidden_field_tag :invitation_token, @invitation_token
+        %fieldset.credit_card
+          .outcome
+            .error
+            .success
+          .form-group
+            %label.control-label.col-sm-2 Credit Card
+            .col-sm-6
+              .group
+                %label.card
+                  #card-number.field
         %fieldset.actions.control-group.col-sm-offset-2
           .controls
           = f.submit "Register"
