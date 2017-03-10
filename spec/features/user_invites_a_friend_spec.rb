@@ -28,7 +28,13 @@ feature "User Invites a friend" do
     fill_in "Password", with: "password"
     fill_in "Full name", with: "John Doe"
     within_frame(find('iframe')) do
-      fill_in name: 'cardnumber', with: '4242424242424242'
+      cardInput = find("input[name='cardnumber']")
+      8.times do
+        cardInput.send_keys('4')
+        cardInput.send_keys('2')
+      end
+
+      # fill_in name: 'cardnumber', with: '4242424242424242'
       fill_in name: 'exp-date', with: '11/20'
       fill_in name: 'cvc', with: '123'
       fill_in name: 'postal', with: '90210'
