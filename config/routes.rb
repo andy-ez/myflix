@@ -1,6 +1,7 @@
 Myflix::Application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
+  mount StripeEvent::Engine, at: '/stripe_events'
 
   get 'ui(/:action)', controller: 'ui'
   root to: 'pages#front'
@@ -24,6 +25,7 @@ Myflix::Application.routes.draw do
   resources :queue_items, only: [:create, :destroy]
   namespace :admin do
     resources :videos, only: [:new, :create]
+    resources :payments, only: [:index]
   end
   resources :videos, only: [:show] do
     collection do
