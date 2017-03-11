@@ -9,6 +9,7 @@ class UserSignup
     if @user.valid?
       customer = StripeWrapper::Customer.create(source: stripe_token, description: @user.full_name, email: @user.email)
       if customer.valid?
+        @user.customer_token = customer.customer.id
         @user.save
         handle_invitation(invitation_token)
         AppMailer.delay.send_welcome_email(@user)

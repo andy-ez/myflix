@@ -4,7 +4,8 @@ describe UserSignup do
   describe "#sign_up" do
     context "with valid card and valid personal info" do
       before do
-        charge = double('charge', valid?: true)
+        customer = double('customer', id: "token")
+        charge = double('charge', valid?: true, customer: customer)
         allow(StripeWrapper::Customer).to receive(:create).and_return(charge)
       end
       after { ActionMailer::Base.deliveries.clear }
@@ -12,6 +13,11 @@ describe UserSignup do
       it "should create the user" do
         UserSignup.new(Fabricate.build(:user)).sign_up(nil, nil)
         expect(User.count).to eq(1)
+      end
+
+      it "stores the customer token from stripe" do
+        UserSignup.new(Fabricate.build(:user)).sign_up(nil, nil)
+        expect(User.first.customer_token).to eq("token")
       end
 
       it "sends the email to the correct recipient with valid inputs" do

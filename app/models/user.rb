@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :following_relationships, class_name: Relationship, foreign_key: :follower_id
   has_many :leading_relationships, class_name: Relationship, foreign_key: :leader_id
   has_many :sent_invitations, class_name: Invitation, foreign_key: :sender_id
+  has_many :payments
   has_secure_password
   validates_presence_of :full_name, :email
   validates_uniqueness_of :email
@@ -41,5 +42,13 @@ class User < ActiveRecord::Base
 
   def destroy_token
     self.update_column(:token, nil)
+  end
+
+  def deactivate!
+    self.update_column(:active, false)
+  end
+
+  def activate!
+    self.update_column(:active, true)
   end
 end
