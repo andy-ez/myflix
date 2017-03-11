@@ -17,6 +17,7 @@ gem 'bcrypt'
 gem 'figaro'
 gem 'sidekiq'
 gem 'stripe'
+gem 'stripe_event'
 
 group :development do
   gem 'thin'

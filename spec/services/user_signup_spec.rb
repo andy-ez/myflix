@@ -4,8 +4,8 @@ describe UserSignup do
   describe "#sign_up" do
     context "with valid card and valid personal info" do
       before do
-        charge = double('charge', successful?: true)
-        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        charge = double('charge', valid?: true)
+        allow(StripeWrapper::Customer).to receive(:create).and_return(charge)
       end
       after { ActionMailer::Base.deliveries.clear }
 
@@ -52,8 +52,8 @@ describe UserSignup do
 
     context "valid personal info and declined card" do
       before do
-        charge = double('charge', successful?: false, error_message: "Card declined")
-        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        charge = double('charge', valid?: false, error_message: "Card declined")
+        allow(StripeWrapper::Customer).to receive(:create).and_return(charge)
       end
 
       it "does not create a new user record" do
@@ -78,8 +78,8 @@ describe UserSignup do
         expect(User.count).to eq(0)
       end
 
-      it "does not create a charge" do
-        expect(StripeWrapper::Charge).not_to receive(:create)
+      it "does not create a subscription" do
+        expect(StripeWrapper::Customer).not_to receive(:create)
         UserSignup.new(User.new(email: "invalid@user.com")).sign_up(nil, nil)
       end
 
