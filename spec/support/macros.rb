@@ -22,6 +22,11 @@ def sign_out
   visit logout_path
 end
 
+def fill_in_slowly(location, with)
+  input_field = find(location)
+  with.each_char { |char| input_field.send_keys(char) }
+end
+
 def click_video_on_home_page(video)
   find("a[href='/videos/#{video.id}']").click
 end
