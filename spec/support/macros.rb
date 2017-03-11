@@ -18,6 +18,10 @@ def sign_in(user=nil)
   click_button "Sign In"
 end
 
+def sign_in_admin
+  sign_in(Fabricate(:user, admin: true))
+end
+
 def sign_out
   visit logout_path
 end

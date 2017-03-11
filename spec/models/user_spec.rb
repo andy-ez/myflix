@@ -61,4 +61,12 @@ describe User do
       expect(alice.token).to be_present
     end
   end
+
+  describe "#deactivate!" do
+    it "should make a users account active be false" do
+      alice = Fabricate(:user)
+      alice.deactivate!
+      expect(User.first).not_to be_active
+    end
+  end
 end

@@ -67,6 +67,10 @@ describe StripeWrapper do
           expect(response.customer.subscriptions.count).to eq(1)
           expect(response.customer.subscriptions.first.plan.id).to eq("myflix_base")
         end
+
+        it "returns the customer id" do
+          expect(response.customer.id).to be_present
+        end
       end
 
       context "with a declined card" do
