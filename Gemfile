@@ -33,7 +33,9 @@ group :development, :test do
   gem 'fabrication'
   gem 'faker'
   gem 'selenium-webdriver'
-  gem "capybara-webkit"
+  gem 'capybara-webkit'
+  gem 'elasticsearch-rails'
+  gem 'elasticsearch-model'
 end
 
 group :test do
