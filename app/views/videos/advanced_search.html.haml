@@ -35,9 +35,9 @@
         .video_body.col-sm-10
           %header
             %h3
-              = link_to video.try(:highlight).try(:title) ? video.highlight.title[0].html_safe : video.title, video_path(video.id)
+              = link_to highlighted_text(video, :title), video_path(video.id)
           %p.video_description
-            = video.try(:highlight).try(:description) ? video.highlight.description[0].html_safe : video.description
+            = highlighted_text(video, :description)
           %hr
           .details
             %span.average_rating 

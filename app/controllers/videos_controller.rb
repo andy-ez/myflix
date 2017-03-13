@@ -6,7 +6,7 @@ class VideosController < ApplicationController
   end
 
   def show
-    @video = Video.find(params[:id])
+    @video = VideoDecorator.decorate(Video.find(params[:id]))
     @reviews = @video.reviews
     @review = Review.new
   end
@@ -22,9 +22,5 @@ class VideosController < ApplicationController
     else
       @videos = []
     end
-  end
-
-  def create_review
-
   end
 end

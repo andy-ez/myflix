@@ -18,6 +18,7 @@ gem 'figaro'
 gem 'sidekiq'
 gem 'stripe'
 gem 'stripe_event'
+gem 'draper'
 
 group :development do
   gem 'thin'

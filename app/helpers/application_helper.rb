@@ -7,4 +7,8 @@ module ApplicationHelper
     review.rating ? "Rating: #{review.rating} / 5" : "Rating: None"
   end
 
+  def highlighted_text(video, field)
+    video.try(:highlight).try(field) ? video.highlight[field][0].html_safe : video.send(field)
+  end
+
 end
