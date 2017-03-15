@@ -18,6 +18,7 @@ gem 'figaro'
 gem 'sidekiq'
 gem 'stripe'
 gem 'stripe_event'
+gem 'draper'
 
 group :development do
   gem 'thin'
@@ -33,7 +34,9 @@ group :development, :test do
   gem 'fabrication'
   gem 'faker'
   gem 'selenium-webdriver'
-  gem "capybara-webkit"
+  gem 'capybara-webkit'
+  gem 'elasticsearch-rails'
+  gem 'elasticsearch-model'
 end
 
 group :test do

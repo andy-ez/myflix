@@ -1,11 +1,13 @@
 %section#top-header.row
-  %h1.col-md-2
+  %h1.col-md-1
     = link_to "MyFLiX", root_path
   - if logged_in?
-    %ul.col-md-4.clearfix
+    %ul.col-md-6.clearfix
       %li= link_to "Videos", categories_path
       %li= link_to "My Queue", my_queue_path
       %li= link_to "People", people_path
+      %li= link_to "Invite Friend", new_invitation_path
+      %li= link_to "Advanced Search", advanced_search_videos_path
     %form.col-md-5.navbar-form(action="/videos/search" method="get")
       .form-group
         %input.form-control(type="text" placeholder="Search for videos here" name="title")
