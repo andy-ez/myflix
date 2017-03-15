@@ -1,6 +1,8 @@
 machine:
   ruby:
     version: 2.2.2
+  services:
+    - elasticsearch
 dependencies:
   pre:
     - echo "export rvm_ignore_gemsets_flag=1" >> ~/.rvmrc
