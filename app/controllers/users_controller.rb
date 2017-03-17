@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_user, only: [:show, :edit, :update, :plan_and_billing]
   def new
+    redirect_to home_path if logged_in?
     @user = User.new
   end
 
@@ -63,7 +64,7 @@ class UsersController < ApplicationController
     subscription = StripeWrapper::Subscription.cancel_subscription(current_user)
     current_user.active = false
     current_user.save
-    flash[:success] = "Your account is no longer active"
+    flash[:info] = "Your account is no longer active"
     redirect_to logout_path
   end
   

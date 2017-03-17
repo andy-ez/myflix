@@ -72,7 +72,6 @@ module StripeWrapper
 
   class Subscription
     def self.retrieve(user)
-      StripeWrapper.set_api_key
       customer = StripeWrapper::Customer.retrieve(user)
       if customer
         begin

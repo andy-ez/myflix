@@ -29,6 +29,20 @@ def sign_in_admin
   sign_in(Fabricate(:user, admin: true))
 end
 
+def register_valid_user(email="alice@example.com", password="password", name="Alice Doe")
+  visit register_path
+  fill_in "Email", with: email
+  fill_in "Password", with: password
+  fill_in "Full name", with: name
+  within_frame(find('iframe')) do
+    fill_in_slowly("input[name='cardnumber']", "4242424242424242")
+    fill_in name: 'exp-date', with: '11/20'
+    fill_in name: 'cvc', with: '123'
+    fill_in name: 'postal', with: '90210'
+  end
+  click_button "Register"
+end
+
 def sign_out
   visit logout_path
 end

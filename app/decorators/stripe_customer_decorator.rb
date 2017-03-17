@@ -38,4 +38,8 @@ class StripeCustomerDecorator
   def plan_active?
     stripe_customer.subscriptions.data[0].status == 'active'
   end
+
+  def any_subscriptions?
+    stripe_customer.subscriptions.data.count > 0
+  end
 end

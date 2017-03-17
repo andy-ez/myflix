@@ -20,6 +20,7 @@ feature "User edits account info" do
     click_button "Update"
     expect(page).to have_content("Updated Account Information")
     sign_out
+    visit login_path
     sign_in_with_details("alice@doe.com", "password")
     expect(page).to have_content("Welcome, Alice Doe")
   end
