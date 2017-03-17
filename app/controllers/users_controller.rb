@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show, :edit, :update]
+  before_action :require_user, only: [:show, :edit, :update, :plan_and_billing]
   def new
     @user = User.new
   end
@@ -46,10 +46,25 @@ class UsersController < ApplicationController
     end
   end
 
+  def plan_and_billing
+    customer = StripeWrapper::Customer.retrieve(current_user)
+    @customer = StripeCustomerDecorator.new(customer)
+    @invoices = StripeWrapper::Invoice.list(current_user).map { |invoice| StripeInvoiceDecorator.new(invoice) }
+    cancel_subscription if params[:cancel].present?
+  end
+
   private
 
   def user_params
     params.require(:user).permit(:email, :full_name, :password, :password_confirmation)
+  end
+
+  def cancel_subscription
+    subscription = StripeWrapper::Subscription.cancel_subscription(current_user)
+    current_user.active = false
+    current_user.save
+    flash[:success] = "Your account is no longer active"
+    redirect_to logout_path
   end
   
 end

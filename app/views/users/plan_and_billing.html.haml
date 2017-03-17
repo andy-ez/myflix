@@ -1,0 +1,35 @@
+%section.billing.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      .plan_and_payments
+        %section.plan
+          %header
+            %h1 Billing
+          %table.table
+            %thead
+              %tr
+                %th
+                %th Next Billing Date
+                %th Price
+            %tbody
+              %tr
+                %td= @customer.plan_name
+                %td= @customer.next_payment_date
+                %td= @customer.plan_cost
+        = button_to "Cancel Service", nil, name: "cancel", class: "btn btn-default"
+
+        %section.payment_history
+          %header
+            %h3 Payment History
+          %table.table
+            %thead
+              %tr
+                %th Date
+                %th Service Duration
+                %th Total
+            %tbody
+              - @invoices.each do |invoice|
+                %tr
+                  %td= invoice.date
+                  %td= invoice.service_duration
+                  %td= invoice.total
