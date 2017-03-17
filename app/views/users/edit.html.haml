@@ -1,0 +1,28 @@
+%section.account.container
+  .row
+    .col-md-10.col-lg-offset-1
+      = form_for @user, html: { class: 'form-horizontal' } do |f|
+        = render 'shared/errors', obj: @user
+        %header
+          %h1 Your Account
+        %fieldset
+          .form-group
+            = f.label :email, "Email Address", class: "control-label col-sm-3"
+            .col-sm-4
+              = f.email_field :email, class: "form-control"
+          .form-group
+            = f.label :password, class: "control-label col-sm-3"
+            .col-sm-4
+              = f.password_field :password, class: 'form-control'
+          .form-group
+            = f.label :password_confirmation, "Confirm Password", class: "control-label col-sm-3"
+            .col-sm-4
+              = f.password_field :password_confirmation, class: 'form-control'
+          .form-group
+            = f.label :full_name, "Full Name", class: "control-label col-sm-3"
+            .col-sm-4
+              = f.text_field :full_name, class: "form-control"
+        %fieldset.actions.form-group
+          .col-sm-8.col-lg-offset-3
+            = f.submit "Update", class: 'btn btn-default'
+            = link_to "Cancel", account_path

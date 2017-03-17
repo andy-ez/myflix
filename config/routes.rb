@@ -12,7 +12,8 @@ Myflix::Application.routes.draw do
   get '/logout', to: 'sessions#destroy'
   get '/home', to: 'categories#index'
   get '/people', to: 'relationships#index'
-  resources :users, except: [:new]
+  resources :users, except: [:new, :edit]
+  get 'account', to: 'users#edit'
   resources :relationships, only: [:destroy, :create]
   resources :invitations, only: [:new, :create]
   get '/my_queue', to: 'queue_items#index'

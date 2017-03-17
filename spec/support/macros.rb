@@ -18,6 +18,13 @@ def sign_in(user=nil)
   click_button "Sign In"
 end
 
+def sign_in_with_details(email, password)
+  visit login_path
+  fill_in "Email Address", with: email
+  fill_in "Password", with: password
+  click_button "Sign In"
+end
+
 def sign_in_admin
   sign_in(Fabricate(:user, admin: true))
 end
