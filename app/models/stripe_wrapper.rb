@@ -52,12 +52,46 @@ module StripeWrapper
       end
     end
 
+    def self.retrieve(user)
+      StripeWrapper.set_api_key
+      begin
+        Stripe::Customer.retrieve(user.customer_token)
+      rescue Stripe::InvalidRequestError
+        nil
+      end
+    end
+
     def valid?
       status == :valid
     end
 
     def error_message
       customer.message
+    end
+  end
+
+  class Subscription
+    def self.retrieve(user)
+      customer = StripeWrapper::Customer.retrieve(user)
+      if customer
+        begin
+          Stripe::Subscription.retrieve(customer.subscriptions.data[0].id)
+        rescue Stripe::InvalidRequestError
+          nil
+        end
+      end
+    end
+
+    def self.cancel_subscription(user)
+      subscription = retrieve(user)
+      subscription.delete if subscription 
+    end
+  end
+
+  class Invoice
+    def self.list(user, limit=10)
+      customer = StripeWrapper::Customer.retrieve(user)
+      Stripe::Invoice.list(customer: customer, limit: limit).try(:data)
     end
   end
 
