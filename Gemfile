@@ -19,6 +19,8 @@ gem 'sidekiq'
 gem 'stripe'
 gem 'stripe_event'
 gem 'draper'
+gem 'elasticsearch-rails'
+gem 'elasticsearch-model'
 
 group :development do
   gem 'thin'
@@ -35,8 +37,6 @@ group :development, :test do
   gem 'faker'
   gem 'selenium-webdriver'
   gem 'capybara-webkit'
-  gem 'elasticsearch-rails'
-  gem 'elasticsearch-model'
 end
 
 group :test do
