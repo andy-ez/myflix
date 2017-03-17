@@ -14,6 +14,8 @@ Myflix::Application.routes.draw do
   get '/people', to: 'relationships#index'
   resources :users, except: [:new, :edit]
   get 'account', to: 'users#edit'
+  get 'billing', to: 'users#plan_and_billing'
+  post 'billing', to: 'users#plan_and_billing'
   resources :relationships, only: [:destroy, :create]
   resources :invitations, only: [:new, :create]
   get '/my_queue', to: 'queue_items#index'

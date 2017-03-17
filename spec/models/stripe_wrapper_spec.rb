@@ -90,4 +90,85 @@ describe StripeWrapper do
       end
     end
   end
+
+  describe StripeWrapper::Subscription do
+    describe ".retrieve" do
+      context "with a valid subscription", :vcr do
+        let(:token) do 
+          Stripe::Token.create(
+              card: {
+                number: "42" * 8,
+                exp_month: "11",
+                exp_year: "2020",
+                cvc: "123"
+              }
+            ).id
+        end
+        let(:response) { StripeWrapper::Customer.create(email: "alice@example.com", source: token) }
+        let(:alice) { Fabricate(:user, email: "alice@example.com", customer_token: response.customer.id) }
+
+        it "returns a valid subscription" do
+          subscription = StripeWrapper::Subscription.retrieve(alice)
+          expect(subscription.object).to eq("subscription")
+          expect(subscription.id).to eq(response.customer.subscriptions.data[0].id)
+        end
+      end
+
+      context "with no subscription", :vcr do
+        it "returns nil" do
+          alice = Fabricate(:user)
+          expect(StripeWrapper::Subscription.retrieve(alice)).to be nil
+        end
+      end
+    end
+
+    describe ".cancel_subscription" do
+      context "with a valid subscription", :vcr do
+        let(:token) do 
+          Stripe::Token.create(
+              card: {
+                number: "42" * 8,
+                exp_month: "11",
+                exp_year: "2020",
+                cvc: "123"
+              }
+            ).id
+        end
+        let(:response) { StripeWrapper::Customer.create(email: "alice@example.com", source: token) }
+        let(:alice) { Fabricate(:user, email: "alice@example.com", customer_token: response.customer.id) }
+
+        it "cancels the subscription" do
+          StripeWrapper::Subscription.cancel_subscription(alice)
+          customer = StripeWrapper::Customer.retrieve(alice)
+          expect(customer.subscriptions.data.count).to eq(0)
+        end
+      end
+    end
+  end
+
+  describe StripeWrapper::Invoice do
+    describe ".list", :vcr do
+      let(:token) do 
+        Stripe::Token.create(
+            card: {
+              number: "42" * 8,
+              exp_month: "11",
+              exp_year: "2020",
+              cvc: "123"
+            }
+          ).id
+      end
+      let(:response) { StripeWrapper::Customer.create(email: "alice@example.com", source: token) }
+      let(:alice) { Fabricate(:user, email: "alice@example.com", customer_token: response.customer.id) }
+      it "returns an array of invoice objects" do
+        invoices = StripeWrapper::Invoice.list(alice)
+        expect(invoices.first.object).to eq("invoice")
+      end
+
+      it "returns an invoice for the right user" do
+        invoices = StripeWrapper::Invoice.list(alice)
+        expect(invoices.first.customer).to eq(alice.customer_token)
+      end
+    end
+  end
 end
