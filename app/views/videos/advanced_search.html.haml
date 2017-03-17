@@ -35,9 +35,9 @@
         .video_body.col-sm-10
           %header
             %h3
-              = link_to highlighted_text(video, :title), video_path(video.id)
+              = link_to video.title, video_path(video.id)
           %p.video_description
-            = highlighted_text(video, :description)
+            = video.description
           %hr
           .details
             %span.average_rating 
@@ -47,5 +47,5 @@
               = pluralize(video.reviews.count, "review")
           - if video.reviews.any?
             %footer.video_review
-              = highlighted_text(video, 'reviews.content', 'reviews.last.content')
+              = video.last_review
  

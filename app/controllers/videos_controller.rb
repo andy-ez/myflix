@@ -18,7 +18,8 @@ class VideosController < ApplicationController
       rating_to: params[:rating_to]
     }
     if params[:query].present?
-      @videos = Video.search(params[:query], options).results
+      videos = Video.search(params[:query], options).results
+      @videos = videos.map { |video| VideoSearchDecorator.new(video) }
     else
       @videos = []
     end
